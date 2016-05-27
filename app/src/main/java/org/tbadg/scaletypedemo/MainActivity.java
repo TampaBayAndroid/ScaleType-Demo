@@ -1,6 +1,7 @@
 package org.tbadg.scaletypedemo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
+    private static final int CHOOSE_IMAGE_REQ_CD = 1313;
 
     // Handles to UI components (made globals for performance):
     private RadioGroup mImageSizeRadioGroup;
@@ -103,6 +105,17 @@ public class MainActivity extends Activity {
 
             case R.id.tall:
                 mImageView.setImageResource(R.drawable.tall);
+                break;
+
+            case R.id.user:
+                // Create an intent to select an openable image:
+                Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                imageIntent.setType("image/*");
+                imageIntent.addCategory(Intent.CATEGORY_OPENABLE);
+
+                // Wrap the intent in a chooser and start it:
+                Intent chooserIntent = Intent.createChooser(imageIntent, "Select image");
+                startActivityForResult(chooserIntent, CHOOSE_IMAGE_REQ_CD);
                 break;
         }
 
@@ -228,5 +241,15 @@ public class MainActivity extends Activity {
 
         // Apply the calculated matrix to the image view:
         mImageView.setImageMatrix(matrix);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CHOOSE_IMAGE_REQ_CD) {
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG, "Image chosen: " + data.getData().toString());
+                mImageView.setImageURI(data.getData());
+            }
+        }
     }
 }

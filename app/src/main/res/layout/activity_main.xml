@@ -35,7 +35,7 @@
                 android:id="@+id/small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="42"
+                android:layout_weight="35"
                 android:onClick="handleImageSizeClick"
                 android:text="@string/small"/>
 
@@ -43,17 +43,26 @@
                 android:id="@+id/wide"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="41"
+                android:layout_weight="35"
                 android:onClick="handleImageSizeClick"
                 android:text="@string/wide"/>
 
             <RadioButton
                 android:id="@+id/tall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:onClick="handleImageSizeClick"
+                android:text="@string/tall"/>
+
+            <RadioButton
+                android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:onClick="handleImageSizeClick"
-                android:text="@string/tall"/>
+                android:padding="0dp"
+                android:text="@string/user"/>
         </RadioGroup>
 
         <TextView

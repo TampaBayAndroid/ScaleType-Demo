@@ -5,6 +5,7 @@
     <string name="small">Small</string>
     <string name="wide">Wide</string>
     <string name="tall">Tall</string>
+    <string name="user">User</string>
 
     <string name="scale_type">ScaleType</string>
     <string name="fit_center">FIT_CENTER</string>
