@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,11 +33,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mImageSizeRadioGroup = (RadioGroup) findViewById(R.id.image_size);
-        mScaleTypeRadioGroup1 = (RadioGroup) findViewById(R.id.scale_type_rg1);
-        mScaleTypeRadioGroup2 = (RadioGroup) findViewById(R.id.scale_type_rg2);
-        mImageView = (ImageView) findViewById(R.id.image_view);
-        mDescription = (TextView) findViewById(R.id.description);
+        mImageSizeRadioGroup = findViewById(R.id.image_size);
+        mScaleTypeRadioGroup1 = findViewById(R.id.scale_type_rg1);
+        mScaleTypeRadioGroup2 = findViewById(R.id.scale_type_rg2);
+        mImageView = findViewById(R.id.image_view);
+        mDescription = findViewById(R.id.description);
 
         // Restore the activity state following a configuration change:
         if (savedInstanceState != null) {
@@ -129,12 +128,7 @@ public class MainActivity extends Activity {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-                            //noinspection deprecation
-                            mImageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        else
-                            mImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
+                        mImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         applyMatrix();
                     }
                 }
@@ -247,7 +241,7 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHOOSE_IMAGE_REQ_CD) {
             if (resultCode == RESULT_OK) {
-                Log.i(TAG, "Image chosen: " + data.getData().toString());
+                Log.i(TAG, "Image chosen: " + data.getData());
                 mImageView.setImageURI(data.getData());
             }
         }
