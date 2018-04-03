@@ -203,6 +203,7 @@ public class MainActivity extends Activity {
     /**
      * Applies image matrix transformation(s) onto the image view.
      */
+    @SuppressWarnings("PointlessArithmeticExpression")
     private void applyMatrix() {
         Matrix matrix = new Matrix();
 
@@ -222,7 +223,13 @@ public class MainActivity extends Activity {
         //   length the top side, giving a trapezoidal:
         float[] src = {0, 0, 0, bmHeight, bmWidth, bmHeight, bmWidth, 0};
         float[] dst = {ivWidth * 3 / 10, 0, 0, ivHeight, ivWidth, ivHeight, ivWidth * 7 / 10, 0};
+
+        // An alternate polygonal mapping:
+        //float[] dst = {ivWidth * 1/2, 0, 0, ivHeight, ivWidth * 7/8, ivHeight, ivWidth, ivHeight * 1/4};
+
         matrix.setPolyToPoly(src, 0, dst, 0, 4);
+        // Add a rotation to the matrix:
+        matrix.postRotate(90.0f, ivWidth / 2.0f, ivHeight / 2.0f);
 
         // Apply the calculated matrix to the image view:
         mImageView.setImageMatrix(matrix);
