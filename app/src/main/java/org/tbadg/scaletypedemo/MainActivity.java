@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -124,15 +123,12 @@ public class MainActivity extends Activity {
         // On a config change, we need to wait until the view layout is done
         //   before calculating image matrix dimensions:
         if (mScaleType == R.id.matrix) {
-            mImageView.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        mImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        applyMatrix();
-                    }
+            mImageView.post(new Runnable() {
+                @Override
+                public void run() {
+                    applyMatrix();
                 }
-            );
+            });
         }
     }
 
@@ -213,11 +209,6 @@ public class MainActivity extends Activity {
         // Get the current dimensions of the whole available area:
         int ivWidth = mImageView.getWidth();
         int ivHeight = mImageView.getHeight();
-
-        // If the view layout hasn't finished yet, just bail for now and wait
-        //   for the listener to call this method again:
-        if (ivWidth == 0)
-            return;
 
         // Get the current dimensions of the actual image as displayed:
         int bmWidth = mImageView.getDrawable().getIntrinsicWidth();
