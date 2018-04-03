@@ -218,6 +218,8 @@ public class MainActivity extends Activity {
         Log.v(TAG, String.format("\nbmWidth=%d, bmHeight=%d, ivWidth=%d, ivHeight=%d",
                                  bmWidth, bmHeight, ivWidth, ivHeight));
 
+        logMatrix("Default matrix", matrix);
+
         // Calculate matching source and destination points and apply a mapping
         //   polygon that will scale the image a la FitXY, but also decrease the
         //   length the top side, giving a trapezoidal:
@@ -228,8 +230,11 @@ public class MainActivity extends Activity {
         //float[] dst = {ivWidth * 1/2, 0, 0, ivHeight, ivWidth * 7/8, ivHeight, ivWidth, ivHeight * 1/4};
 
         matrix.setPolyToPoly(src, 0, dst, 0, 4);
+        logMatrix("After polygonal mapping", matrix);
+
         // Add a rotation to the matrix:
         matrix.postRotate(90.0f, ivWidth / 2.0f, ivHeight / 2.0f);
+        logMatrix("After rotate", matrix);
 
         // Apply the calculated matrix to the image view:
         mImageView.setImageMatrix(matrix);
@@ -243,5 +248,18 @@ public class MainActivity extends Activity {
                 mImageView.setImageURI(data.getData());
             }
         }
+    }
+
+    private void logMatrix(String label, Matrix matrix) {
+
+        float[] matrixVals = new float[9];
+        matrix.getValues(matrixVals);
+        Log.i(TAG, String.format(
+            "%s:  matrix = %s\n  scale (x,y) = (%f, %f)\n  translate (x, y) = (%f, %f)\n  skew "
+            + "(x,y) = (%f, %f)\n  perspective-0 = %f\n  perspective-1 = %f\n  perspective-2 = %f",
+            label, matrix, matrixVals[Matrix.MSCALE_X], matrixVals[Matrix.MSCALE_Y],
+            matrixVals[Matrix.MSKEW_X], matrixVals[Matrix.MSKEW_Y],
+            matrixVals[Matrix.MTRANS_X], matrixVals[Matrix.MTRANS_Y],
+            matrixVals[Matrix.MPERSP_0], matrixVals[Matrix.MPERSP_1], matrixVals[Matrix.MPERSP_2]));
     }
 }
